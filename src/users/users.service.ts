@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
@@ -11,11 +10,6 @@ export class UsersService {
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
   ) { }
-
-  async create(createUserDto: CreateUserDto) {
-    const user = new this.userModel(createUserDto);
-    return user.save();
-  }
 
   async findAll() {
     return this.userModel.find().exec();

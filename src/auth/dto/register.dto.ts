@@ -1,9 +1,18 @@
-import { IsString, IsEmail } from 'class-validator'
+import { IsEmail, IsNumber, IsString, IsStrongPassword } from 'class-validator'
 
 export class RegisterDto {
-    @IsEmail()
-    email: string
+  @IsString()
+  name: string
 
-    @IsString()
-    password: string
+  @IsEmail()
+  email: string
+
+  @IsStrongPassword()
+  password: string
+
+  @IsString()
+  role: string = "member"
+
+  @IsNumber()
+  age: number
 }
