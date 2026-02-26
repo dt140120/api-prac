@@ -41,7 +41,10 @@ export class AuthController {
       sameSite: 'strict',
     })
 
-    return user
+    return {
+      accessToken,
+      user
+    }
   }
 
   @Post('logout')

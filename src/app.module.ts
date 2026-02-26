@@ -25,7 +25,6 @@ import { ExamSessionsModule } from './exam-sessions/exam-sessions.module';
         const host = config.get('MONGO_HOST')
         const port = config.get('MONGO_PORT')
         const db = config.get('MONGO_DB')
-
         const uri = `mongodb://${host}:${port}/${db}`
         return { uri }
       },
@@ -44,4 +43,4 @@ import { ExamSessionsModule } from './exam-sessions/exam-sessions.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
