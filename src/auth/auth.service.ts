@@ -10,9 +10,14 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(dto: RegisterDto) {
+    const existingUser = await this.usersService.findByEmail(dto.email)
+    if (existingUser) {
+      throw new UnauthorizedException('Tài khoản đã tồn tại, vui lòng đăng nhập!')
+    }
+
     const hashedPassword = await bcrypt.hash(dto.password, 10)
 
     const user = await this.usersService.create({

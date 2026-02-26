@@ -11,15 +11,24 @@ export class UsersService {
     private readonly userModel: Model<UserDocument>,
   ) { }
 
+  async create(createUserDto: any) {
+    const createdUser = new this.userModel(createUserDto);
+    return createdUser.save();
+  }
+
+  async findByEmail(email: string) {
+    return this.userModel.findOne({ email }).exec();
+  }
+
   async findAll() {
-    return this.userModel.find().exec();
+    return this.userModel.find().select('-password').exec();
   }
 
   async findOne(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid user id');
     }
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel.findById(id).select('-password').exec();
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -34,7 +43,7 @@ export class UsersService {
       id,
       updateUserDto,
       { new: true },
-    ).exec();
+    ).select('-password').exec();
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -45,7 +54,7 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid user id');
     }
-    const user = await this.userModel.findByIdAndDelete(id).exec();
+    const user = await this.userModel.findByIdAndDelete(id).select('-password').exec();
     if (!user) {
       throw new NotFoundException('User not found');
     }
