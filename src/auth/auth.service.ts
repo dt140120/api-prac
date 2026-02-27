@@ -48,8 +48,6 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload)
 
-    console.log('ok ham login duoc goi')
-
     return {
       accessToken,
       user: {

@@ -16,13 +16,15 @@ export class QuestionsService {
         return createdQuestion.save();
     }
 
-    async findAll(examId?: string): Promise<Question[]> {
+    async findAll(examId?: string, isAdmin: boolean = false): Promise<Question[]> {
         const query: any = examId ? { examId } : {};
-        return this.questionModel.find(query).populate('examId', 'title description').exec();
+        const projection = isAdmin ? {} : { correctAnswer: 0 };
+        return this.questionModel.find(query, projection).populate('examId', 'title description').exec();
     }
 
-    async findOne(id: string): Promise<Question> {
-        const question = await this.questionModel.findById(id).populate('examId', 'title').exec();
+    async findOne(id: string, isAdmin: boolean = false): Promise<Question> {
+        const projection = isAdmin ? {} : { correctAnswer: 0 };
+        const question = await this.questionModel.findById(id, projection).populate('examId', 'title').exec();
         if (!question) {
             throw new NotFoundException(`Question #${id} not found`);
         }
