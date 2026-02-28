@@ -81,4 +81,17 @@ export class ExamAttemptsService {
             .sort({ createdAt: -1 })
             .exec();
     }
+
+    async getAllAttempts(query?: any): Promise<ExamAttempt[]> {
+        const filter: any = {};
+        if (query?.userId) filter.userId = new Types.ObjectId(query.userId);
+        if (query?.examId) filter.examId = new Types.ObjectId(query.examId);
+
+        return this.examAttemptModel
+            .find(filter)
+            .populate('examId', 'title durationMinutes passScore')
+            .populate('userId', 'name email username')
+            .sort({ createdAt: -1 })
+            .exec();
+    }
 }

@@ -13,7 +13,16 @@ export class Lesson {
     title: string;
 
     @Prop()
-    content: string;
+    speaking: string;
+
+    @Prop()
+    reading: string;
+
+    @Prop()
+    writing: string;
+
+    @Prop()
+    listening: string;
 
     @Prop()
     videoUrl: string;

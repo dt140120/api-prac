@@ -12,10 +12,25 @@ export class CreateLessonDto {
     @IsNotEmpty()
     title: string;
 
-    @ApiPropertyOptional({ example: 'Nội dung chi tiết bài học...', description: 'Nội dung bài học' })
+    @ApiPropertyOptional({ example: 'Nội dung bài speaking...', description: 'Phần Speaking' })
     @IsString()
     @IsOptional()
-    content?: string;
+    speaking?: string;
+
+    @ApiPropertyOptional({ example: 'Nội dung bài reading...', description: 'Phần Reading' })
+    @IsString()
+    @IsOptional()
+    reading?: string;
+
+    @ApiPropertyOptional({ example: 'Nội dung bài writing...', description: 'Phần Writing' })
+    @IsString()
+    @IsOptional()
+    writing?: string;
+
+    @ApiPropertyOptional({ example: 'Nội dung bài listening...', description: 'Phần Listening' })
+    @IsString()
+    @IsOptional()
+    listening?: string;
 
     @ApiPropertyOptional({ example: 'https://youtube.com/...', description: 'Video bài giảng' })
     @IsString()

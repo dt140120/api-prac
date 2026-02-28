@@ -1,8 +1,10 @@
-import { Controller, Post, Body, Req, UseGuards, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Post, Body, Req, UseGuards, Get, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { ExamAttemptsService } from './exam-attempts.service';
 import { SubmitExamDto } from './dto/submit-exam.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import type { Request } from 'express';
 
 @ApiTags('Exam Attempts - Lịch sử thi & Tính điểm')
@@ -26,5 +28,16 @@ export class ExamAttemptsController {
     getMyAttempts(@Req() req: Request) {
         const userId = (req.user as any)._id;
         return this.examAttemptsService.getMyAttempts(userId);
+    }
+
+    @Get('all')
+    @UseGuards(RolesGuard)
+    @Roles('admin', 'teacher')
+    @ApiOperation({ summary: 'Admin/Giáo viên xem tất cả lịch sử thi' })
+    @ApiQuery({ name: 'userId', required: false, description: 'Lọc theo ID học viên' })
+    @ApiQuery({ name: 'examId', required: false, description: 'Lọc theo ID bài thi' })
+    @ApiResponse({ status: 200, description: 'Lấy danh sách thành công.' })
+    getAllAttempts(@Query() query: any) {
+        return this.examAttemptsService.getAllAttempts(query);
     }
 }
