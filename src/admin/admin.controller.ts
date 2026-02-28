@@ -25,7 +25,7 @@ export class AdminController {
     @ApiResponse({ status: 200, description: 'Đăng nhập Admin thành công' })
     async adminLogin(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
         const { accessToken, user } = await this.authService.login(dto);
-        if (user.role !== 'admin' && user.role !== 'teacher') {
+        if (user.role !== 'admin') {
             throw new UnauthorizedException('Bạn không có quyền truy cập trang quản trị!');
         }
         res.cookie('access_token', accessToken, {
@@ -33,7 +33,10 @@ export class AdminController {
             secure: true,
             sameSite: 'strict',
         });
-        return user;
+        return {
+            accessToken,
+            user,
+        };
     }
 
     @Get('users')
